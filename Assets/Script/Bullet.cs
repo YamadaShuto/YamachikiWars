@@ -4,26 +4,50 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    private float speed = 15.0f;
+    private float speed = 40.0f;
     public static int bullet_num = 0;
-    public const int max_bullet = 5;
+    public const int max_bullet = 1000;
+    public bool is_rockon = false;
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start ()
     {
-        bullet_num++;
+        
 	}
 	
 	// Update is called once per frame
-	void Update ()
+	void LateUpdate ()
     {
-        Move();	
+        Move();
+        Rotation();
+        Destroy(this.gameObject, 2.0f);
 	}
 
     private void Move()
     {
         //向いている正面に一定速度移動
-        transform.Translate(Vector3.forward * Time.deltaTime * speed * 1);
+        transform.Translate(Vector3.forward * Time.deltaTime * speed);
+    }
+
+    private void Rotation()
+    {
+        if(!is_rockon)
+        {
+            //回転行列
+            Quaternion AddRot = Quaternion.identity;
+            //横回転
+            float yaw = 0;
+            //縦回転
+            float pitch = 0;
+            //回転の適用
+            AddRot.eulerAngles = new Vector3(yaw, pitch, 0);
+            transform.rotation *= AddRot;
+        }
+        else
+        {
+            transform.LookAt(transform.SearchNearTag("Enemy").transform);
+        }
+
     }
 
     void OnCollisionEnter(Collision collision)
@@ -34,5 +58,10 @@ public class Bullet : MonoBehaviour
             Destroy(collision.gameObject);
         }
     }
-
+    
+    public bool Is_rockon
+    {
+        get { return is_rockon; }
+        set { is_rockon = value; }
+    }
 }

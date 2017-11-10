@@ -87,6 +87,7 @@
     <Compile Include="Assets\Script\Bullet.cs" />
     <Compile Include="Assets\Script\CameraController.cs" />
     <Compile Include="Assets\Script\EnemyController.cs" />
+    <Compile Include="Assets\Script\Extension.cs" />
     <Compile Include="Assets\Script\GameController.cs" />
     <Compile Include="Assets\Script\MonoBehaviourCustom.cs" />
     <Compile Include="Assets\Script\PlayerController.cs" />

@@ -4,25 +4,34 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    public float speed = 0.3f;
-    //public const int 
+    private float speed = 0.9f;
+    private GameObject player;
 
     // Use this for initialization
     void Start ()
     {
-		
+        player = GameObject.FindGameObjectWithTag("Player");
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
-        //Move();
+       // Move();
 	}
 
     private void Move()
     {
+        transform.LookAt(player.transform);
         //向いている正面に一定速度移動
-        transform.Translate(Vector3.forward * Time.deltaTime * speed * 1);
+        transform.Translate(Vector3.forward * Time.deltaTime * speed );
     }
-
+    
+    private void OnBecameInvisible()
+    {
+        enabled = true;
+    }
+    private void OnBecameVisible()
+    {
+        enabled = false;
+    }
 }

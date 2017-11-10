@@ -2,39 +2,39 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviourCustom
 {
     public float rot_speed = 0.3f;
     public float speed = 0.5f;
     public GameObject bullet;
-    private bool rot_right = false;
-    private bool rot_left = false;
-    private bool rot_up = false;
-    private bool rot_down = false;
-    private GameObject near_enemy;
+    public bool is_rockon = false;
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start()
     {
-	}
-	
-	// Update is called once per frame
-	void Update ()
+    }
+
+    // Update is called once per frame
+    void Update()
     {
         Move();
-        
+
         Rotation();
 
-        if(Bullet.bullet_num <= Bullet.max_bullet)
+        if (Input.GetKey(KeyCode.X))
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            is_rockon = true;
+        }
+        else if(Input.GetKeyUp(KeyCode.X))
+        {
+            is_rockon = false;
+        }
+        if (Extension.SearchTagCount("Bullet") <= Bullet.max_bullet)
+        {
+            if (Input.GetKey(KeyCode.Space))
             {
                 Shot();
             }
-        }
-        if(Input.GetKeyDown(KeyCode.X))
-        {
-            LockOn();
         }
     }
 
@@ -52,53 +52,23 @@ public class PlayerController : MonoBehaviour
         float yaw = 0;
         //縦回転
         float pitch = 0;
-        //同時押し回避
-        if (!(rot_down && rot_up))
+        if (Input.GetKey(KeyCode.UpArrow))
         {
-            if (Input.GetKey(KeyCode.UpArrow))
-            {
-                yaw = -1 * rot_speed;
-                rot_up = true;
-            }
-            if (Input.GetKey(KeyCode.DownArrow))
-            {
-                yaw = rot_speed;
-                rot_down = true;
-            }
+            yaw = -1 * rot_speed;
         }
-        if (Input.GetKeyUp(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.DownArrow))
         {
-            rot_up = false;
+            yaw = rot_speed;
         }
-        if (Input.GetKeyUp(KeyCode.DownArrow))
+        if (Input.GetKey(KeyCode.LeftArrow))
         {
-            rot_down = false;
+            pitch = -1 * rot_speed;
+        }
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            pitch = rot_speed;
         }
 
-        //同時押し回避
-        if (!(rot_left && rot_right))
-        {
-            if (Input.GetKey(KeyCode.LeftArrow))
-            {
-                pitch = -1 * rot_speed;
-                rot_left = true;
-            }
-            if (Input.GetKey(KeyCode.RightArrow))
-            {
-                pitch = rot_speed;
-                rot_right = true;
-            }
-        }
-        
-        if (Input.GetKeyUp(KeyCode.LeftArrow))
-        {
-            rot_left = false;
-        }
-        if (Input.GetKeyUp(KeyCode.RightArrow))
-        {
-            rot_right = false;
-        }
-        
         //回転の適用
         AddRot.eulerAngles = new Vector3(yaw, pitch, 0);
         transform.rotation *= AddRot;
@@ -106,18 +76,14 @@ public class PlayerController : MonoBehaviour
 
     private void Shot()
     {
-        Instantiate(bullet, transform.position, transform.rotation);
+        if (!is_rockon)
+        {
+            Instantiate(bullet, transform.position, transform.rotation);
+        }
+        else
+        {
+            Instantiate(bullet, transform.position, transform.rotation).GetComponent<Bullet>().is_rockon = true;
+        }
     }
 
-    private void CalcDistance()
-    {
-        //Vector3 distance = enemy.transform.position - transform.position;
-        //distance.Normalize();
-        //transform.Rotate(distance);
-    }
-
-    private void LockOn()
-    {
-
-    }
 }
