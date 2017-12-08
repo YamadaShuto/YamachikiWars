@@ -24,8 +24,9 @@ public class PlayerPrefsEditor : EditorWindow
 
     void OnGUI()
     {
-        //castをしないといけない
+        // It`s necessary to cast to the type to use
         type = (TYPE)EditorGUILayout.EnumPopup("Type", type);
+
         GUILayout.BeginHorizontal();
         GUILayout.Label("Key");
         key = GUILayout.TextField(key);
@@ -40,7 +41,18 @@ public class PlayerPrefsEditor : EditorWindow
         }
         if (GUILayout.Button("Save"))
         {
-            PlayerPrefs.SetString(key, value);
+            switch (type)
+            {
+                case TYPE.INT:
+                    PlayerPrefs.SetInt(key, int.Parse(value));
+                    break;
+                case TYPE.FLOAT:
+                    PlayerPrefs.SetFloat(key, float.Parse(value));
+                    break;
+                case TYPE.STRING:
+                    PlayerPrefs.SetString(key, value);
+                    break;
+            }
             // Saving data
             PlayerPrefs.Save();
         }

@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LogoFront : MonoBehaviour
+public class LogoFront : MonoBehaviourCustom
 {
     int frame = 0;
     [SerializeField]
     Vector2 target_pos;
+
 	// Use this for initialization
 	void Start ()
     {

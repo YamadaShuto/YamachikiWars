@@ -5,30 +5,25 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviourCustom
 {
-    //回転速度
+    // Rotate velocity
     private float rot_speed = 0.3f;
-    [SerializeField]
-    //移動速度
-    private float speed = 3.0f;
-    //弾オブジェクト
+    [ReadOnly]
+    // Velocity
+    private float m_speed = 3.0f;
+    // Bullet object
     [SerializeField]
     private GameObject bullet;
-    //ロックオンの状態
-    private bool is_rockon = false;
-    //回転状態
-    private bool is_rotate = false;
-    //HP
+    // Whether it`s locked on
+    private bool is_lock_on = false;
+    // HP
     [ReadOnly]
     public int m_hp = 50;
-    //発射感覚
+    // Shot interval
     private int m_shot_time = 20;
-    private float m_shot_time_cnt = 0;
-    private bool is_bullet = false;
-    // Use this for initialization
+    // Whether it`s shooting bullets
+    private bool is_shoot = false;
+    // Whether it`s boosting
     private bool is_boost = false;
-    void Start()
-    {
-    }
 
     // Update is called once per frame
     void Update()
@@ -39,150 +34,121 @@ public class PlayerController : MonoBehaviourCustom
         }
         if(Input.GetKey(KeyCode.A))
         {
-            speed = 4.5f;
+            m_speed = 4.5f;
             is_boost = true;
         }
         else
         {
-            speed = 3.0f;
+            m_speed = 3.0f;
             is_boost = false;
         }
-        //自動移動処理
+        // Moving processing
         Move();
-        //回転処理
+        // Rotation processing
         Rotation();
-        //ロックオン処理
-        RockOn();
-        //弾発射処理
-        if(is_bullet)
-        {
-            m_shot_time_cnt++;
-            if(m_shot_time <= m_shot_time_cnt)
-            {
-                is_bullet = false;
-                m_shot_time_cnt = 0;
-            }
-        }
-        else
-        {
-            Shot();
-        }
+        // Lock on processing
+        LockOn();
+        // Shooting bullets processing
+        Shot();
+
+    }
+
+    private void boost()
+    {
+
     }
 
     private void Move()
     {
-        //向いている正面に一定速度移動
-        transform.Translate(Vector3.forward * Time.deltaTime * speed * 1);
+        // Moving to the front
+        transform.Translate(Vector3.forward * Time.deltaTime * m_speed * 1);
     }
 
     private void Rotation()
     {
-        //回転行列
         Quaternion AddRot = Quaternion.identity;
-        //横回転
         float yaw = 0;
-        //縦回転
         float pitch = 0;
         if (Input.GetKey(KeyCode.UpArrow))
         {
-            yaw = -1 * rot_speed;
-            is_rotate = true;
-        }
-        else
-        {
-            is_rotate = false;
+            yaw = -rot_speed;
         }
         if (Input.GetKey(KeyCode.DownArrow))
         {
             yaw = rot_speed;
-            is_rotate = true;
-        }
-        else
-        {
-            is_rotate = false;
         }
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            pitch = -1 * rot_speed;
-            is_rotate = true;
-        }
-        else
-        {
-            is_rotate = false;
+            pitch = -rot_speed;
         }
         if (Input.GetKey(KeyCode.RightArrow))
         {
             pitch = rot_speed;
-            is_rotate = true;
         }
-        else
-        {
-            is_rotate = false;
-        }
-
-        //回転の適用
         AddRot.eulerAngles = new Vector3(yaw, pitch, 0);
         transform.rotation *= AddRot;
     }
 
-    private void RockOn()
+    private void LockOn()
     {
-        //Xが押されている間ロックオン
+        // While X key is pressed
         if (Input.GetKey(KeyCode.X))
         {
-            is_rockon = true;
+            is_lock_on = true;
         }
-        else if (Input.GetKeyUp(KeyCode.X))
+        else
         {
-            is_rockon = false;
+            is_lock_on = false;
         }
     }
 
     private void Shot()
     {
-        if (Input.GetKey(KeyCode.Space))
+        if (is_shoot)
         {
-            //弾の数が最大なら発射しない
-            if (Extension.SearchTagCount("Bullet") <= Bullet.max_bullet)
+            if (Time.time % m_shot_time == 0)
+            {
+                is_shoot = false;
+            }
+        }
+        else
+        {
+            if (Input.GetKey(KeyCode.Space))
             {
                 GameObject obj;
-                //ロックオン時
-                if (is_rockon)
+                // Create bullet
+                obj = Instantiate(bullet, transform.position, transform.rotation);
+                // Change state it a player`s bullet
+                obj.GetComponent<Bullet>().IsPlayer = true;
+                // While is lock on
+                if (is_lock_on)
                 {
-                    //弾の生成
-                    obj = Instantiate(bullet, transform.position, transform.rotation);
-                    //ロックオン状態にする
-                    obj.GetComponent<Bullet>().Is_rockon = true;
+                    // Change to lock on state
+                    obj.GetComponent<Bullet>().IsLockOn = true;
                     obj.GetComponent<Bullet>().Target = transform.SearchNearTag("Enemy");
                 }
-                else
-                {
-                    //弾の生成
-                    obj = Instantiate(bullet, transform.position, transform.rotation);
-                }
-                //プレイヤーの弾
-                obj.GetComponent<Bullet>().Is_player = true;
-                is_bullet = true;
+               // Change state a shooting bullet
+                is_shoot = true;
             }
         }
     }
 
-    public bool IsRockOn
+    // Setting property
+    public bool IsLockOn
     {
-        get { return is_rockon; }
+        get { return is_lock_on; }
     }
-
     public int HP
     {
         get { return m_hp; }
         set { m_hp = value; }
     }
-
     public bool IsBoost
     {
         get { return is_boost; }
     }
-    
+
+    // Collision ditermination
     void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.tag == "Enemy")

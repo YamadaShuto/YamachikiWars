@@ -8,7 +8,7 @@ public class MonoBehaviourCustom : MonoBehaviour
     private Transform m_transform;
     private Rigidbody m_rigidbody;
 
-	//Transformコンポーネントを返す
+	// Return Transform conponent
     public new Transform transform
     {
         get
@@ -21,7 +21,7 @@ public class MonoBehaviourCustom : MonoBehaviour
         }
     }
     
-    //Rigidbodyコンポーネントを返す
+    // Return Rigidbody component
     public new Rigidbody rigidbody
     {
         get

@@ -2,101 +2,104 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class Bullet : MonoBehaviourCustom
 {
-    //速度
-    private float speed = 40.0f;
-    //弾の最大数
-    public const int max_bullet = 50;
-    //ロックオンの状態
-    private bool is_rockon = false;
-    //誰が発射したか
-    private bool is_player = false;
-    private Transform target;
+    // Velocity
+    private float m_speed = 40.0f;
+    // Whether it`s locked on
+    private bool is_lock_on = false;
+    // Whether it`s thing of the player
+    private bool is_player_has = false;
+    // Target information
+    private Transform m_target;
     
     // Use this for initialization
     void Start ()
     {
-        //一定時間後に消える
+        // Destory after contant time
         Destroy(this.gameObject, 1.0f);
+        // Adjustment direction
         Rotation();
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
-        //移動処理
+        // Moving processing
         Move();
 	}
 
     private void Move()
     {
-        //向いている正面に一定速度移動
-        transform.Translate(Vector3.forward * Time.deltaTime * speed);
+        // Moving to the front
+        transform.Translate(Vector3.forward * Time.deltaTime * m_speed);
     }
 
     private void Rotation()
     {
-        //プレイヤーの物でロックオン中なら敵に向く
-        if(is_player)
+        // If the player has
+        if(is_player_has)
         {
-            if (is_rockon)
+            // If in the lock on state
+            if (is_lock_on)
             {
-                transform.LookAt(target);
+                // Look at the target
+                transform.LookAt(m_target);
             }
         }
-        //敵の物ならplayerを向く
+        // If the enemy has
         else
         {
-            transform.LookAt(target);
+            // Look at the player
+            transform.LookAt(m_target);
         }
-
     }
 
     void OnCollisionEnter(Collision collision)
     {
+        /*
         if(collision.gameObject == null)
         {
             Destroy(this.gameObject);
             return;
         }
-        //誰の物か
-        if (is_player)
+        */
+        // If the player has
+        if (is_player_has)
         {
-            //敵に当たったら
+            // If hitting Enemy
             if (collision.gameObject.tag == "Enemy")
             {
-                Debug.Log("bullet");
+                // Cut back Enemy HP
                 collision.gameObject.GetComponent<EnemyController>().HP--;
                 Destroy(this.gameObject);
             }
         }
         else
         {
-            //プレイヤーに当たったら
+            // If hitting player 
             if (collision.gameObject.tag == "Player")
             {
-                Debug.Log("bullet Player");
+                // Cut back Player HP
                 collision.gameObject.GetComponent<PlayerController>().HP--;
                 Destroy(this.gameObject);
             }
         }
     }
-    
-    public bool Is_rockon
-    {
-        get { return is_rockon; }
-        set { is_rockon = value; }
-    }
 
-    public bool Is_player
+    // Setting property
+    public bool IsLockOn
     {
-        get { return is_player; }
-        set { is_player = value; }
+        get { return is_lock_on; }
+        set { is_lock_on = value; }
     }
-
+    public bool IsPlayer
+    {
+        get { return is_player_has; }
+        set { is_player_has = value; }
+    }
     public GameObject Target
     {
-       set { target = value.transform;   }
+       set { m_target = value.transform;   }
     }
 }

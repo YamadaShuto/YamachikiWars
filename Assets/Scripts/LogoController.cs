@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
 
-public class LogoController : MonoBehaviour
+public class LogoController : MonoBehaviourCustom
 {
     int frame_cnt = 0;
     // Update is called once per frame

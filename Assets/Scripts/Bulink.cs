@@ -17,8 +17,10 @@ public class Bulink : MonoBehaviourCustom
 	// Update is called once per frame
 	void Update ()
     {
+        // Called every constant interval
 		if(Time.time > m_next_time)
         {
+            // When drawing
             if(GetComponent<CanvasRenderer>().GetAlpha() > 0.0f)
             {
                 GetComponent<CanvasRenderer>().SetAlpha(0.0f);

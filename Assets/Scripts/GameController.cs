@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameController : MonoBehaviour
+public class GameController : MonoBehaviourCustom
 {
     public GameObject enemy;
 
@@ -13,11 +13,14 @@ public class GameController : MonoBehaviour
     private UnityEngine.UI.Text hp;
     [SerializeField]
     private PlayerController player;
+
     // Use this for initialization
     void Start ()
     {
+        // Create enemy
         for (int i = 0; i < 10; i++)
         {
+            // Setting position
             int num = Random.Range(0, 1);
             Vector3 pos = Vector3.zero;
             if (num == 1)

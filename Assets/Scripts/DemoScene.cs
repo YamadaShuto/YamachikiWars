@@ -3,23 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class DemoScene : MonoBehaviour
+public class DemoScene : MonoBehaviourCustom
 {
-
     [SerializeField]
     private UnityEngine.UI.Text score;
     [SerializeField]
     private UnityEngine.UI.Text hp;
-    [SerializeField]
     private PlayerController player;
-    // Use this for initialization
+
     void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
     }
-
     // Update is called once per frame
     void Update()
     {
+        // The enemy count is 0
         if (Extension.SearchTagCount("Enemy") == 0)
         {
             SceneManager.LoadScene(3);

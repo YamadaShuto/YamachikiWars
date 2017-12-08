@@ -2,30 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyController : MonoBehaviour
+public class EnemyController : MonoBehaviourCustom
 {
-    //移動速度
-    private float speed = 3.0f;
-    //
-    private GameObject player;
-    //探査時間
-    //private int search_time = 10;
-    //弾のオブジェクト
+    // Velocirt
+    private float m_speed = 3.0f;
+    // Player object
+    private GameObject m_player;
+    // Bullet object
     [SerializeField]
-    private GameObject bullet;
-    //HP
+    private GameObject m_bullet;
+    // HP
     [SerializeField]
     private int m_hp = 10;
-    //発射感覚
+    // Bullet firing interval
     private int m_shot_time = 25;
-    private float m_shot_time_cnt = 0;
-    private bool is_bullet = false;
+    // Healing interval
     private float m_heal_time = 1600;
-    private float m_heal_cnt = 0;
     // Use this for initialization
     void Start ()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        m_player = GameObject.FindGameObjectWithTag("Player");
 	}
 	
 	// Update is called once per frame
@@ -36,60 +32,42 @@ public class EnemyController : MonoBehaviour
             Destroy(this.gameObject);
             return;
         }
-        Move();
-        if(m_heal_cnt >= m_heal_time)
+        if(Time.time % m_heal_time == 0)
         {
             HP++;
-            m_heal_cnt = 0;
         }
-        else
-        {
-            m_heal_cnt++;
-        }
-        //探知時間に達していたら弾発射
-        
-      // if(search_time == time_cnt)
-        {
-            //target_pos = player.transform.position;
-            //GameObject obj = Instantiate(bullet, transform.position, transform.rotation);
-            //obj.GetComponent<Bullet>().Is_rockon = true;
-            //obj.GetComponent<Bullet>().Is_player = false;
-            //time_cnt = 0;
-        }
-
-        //敵とPlayerとの距離の判定
-        if (Vector3.Distance(transform.position, player.transform.position) <= 30.0f)
-        {
-            if (is_bullet)
-            {
-                m_shot_time_cnt++;
-                if (m_shot_time <= m_shot_time_cnt)
-                {
-                    is_bullet = false;
-                    m_shot_time_cnt = 0;
-                }
-            }
-            else
-            {
-                GameObject obj = Instantiate(bullet, transform.position, transform.rotation);
-                obj.GetComponent<Bullet>().Is_rockon = true;
-                obj.GetComponent<Bullet>().Is_player = false;
-                obj.GetComponent<Bullet>().Target = transform.SearchNearTag("Player");
-                is_bullet = true;
-            }
-        }
-        //スムーズにターゲットの方向を向く
-        transform.rotation = Quaternion.Slerp(transform.rotation, player.transform.rotation, Time.deltaTime * speed);
-
+        Move();
+        Rotation();
     }
 
     private void Move()
     {
-        //transform.LookAt(player.transform);
-        //向いている正面に一定速度移動
-        transform.Translate(Vector3.forward * Time.deltaTime * speed );
+        // Moving constant velocity to the front
+        transform.Translate(Vector3.forward * Time.deltaTime * m_speed );
     }
 
+    private void Rotation()
+    {
+        // Look at the target
+        transform.rotation = Quaternion.Slerp(transform.rotation, m_player.transform.rotation, Time.deltaTime * m_speed);
+    }
+
+    private void Shot()
+    {
+        //Judgment of player distance
+        if (Vector3.Distance(transform.position, m_player.transform.position) <= 30.0f)
+        {
+            if (Time.time % m_shot_time == 0)
+            {
+                GameObject obj = Instantiate(m_bullet, transform.position, transform.rotation);
+                obj.GetComponent<Bullet>().IsLockOn = true;
+                obj.GetComponent<Bullet>().IsPlayer = false;
+                obj.GetComponent<Bullet>().Target = transform.SearchNearTag("Player");
+            }
+        }
+    }
+
+    // Setting property
     public int HP
     {
         get { return m_hp; }

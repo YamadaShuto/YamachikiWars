@@ -6,7 +6,7 @@ public static class Extension
 {
     private static Vector3 vector3;
 
-    //ポジションの設定
+    // Setting position
     #region SetPosition
     public static void SetPosition(this Transform transform, float x, float y, float z)
     {
@@ -29,7 +29,7 @@ public static class Extension
         transform.position = vector3;
     }
     #endregion
-    //ポジションの加算
+    // Add position
     #region AddPosition
     public static void AddPosition(this Transform transform, float x, float y, float z)
     {
@@ -52,7 +52,7 @@ public static class Extension
         transform.position = vector3;
     }
     #endregion
-    //ローカルポジションの設定
+    // Setting local position
     #region SetLocalPosition
     public static void SetLocalPosition(this Transform transform, float x, float y, float z)
     {
@@ -75,7 +75,7 @@ public static class Extension
         transform.localPosition = vector3;
     }
     #endregion
-    //ローカルポジションに加算
+    // Add local position
     #region AddLocalPosition
     public static void AddLocalPosition(this Transform transform, float x, float y, float z)
     {
@@ -98,7 +98,7 @@ public static class Extension
         transform.localPosition = vector3;
     }
     #endregion
-    //スケールの設定
+    // Setting scale
     #region SetLocalScale
     public static void SetLocalScale(this Transform transform, float x, float y, float z)
     {
@@ -121,7 +121,7 @@ public static class Extension
         transform.localScale = vector3;
     }
     #endregion
-    //スケールの加算
+    // Add scale
     #region AddLocalScale
     public static void AddLocalScale(this Transform transform, float x, float y, float z)
     {
@@ -144,7 +144,7 @@ public static class Extension
         transform.localScale = vector3;
     }
     #endregion
-    //角度の設定
+    // Setting angle
     #region SetEulerAngles
     public static void SetEulerAngles(this Transform transform, float x, float y, float z)
     {
@@ -167,7 +167,7 @@ public static class Extension
         transform.eulerAngles = vector3;
     }
     #endregion
-    //角度を加算
+    // Add angle
     #region AddEulerAngles
     public static void AddEulerAngles(this Transform transform, float x, float y, float z)
     {
@@ -190,7 +190,7 @@ public static class Extension
         transform.eulerAngles = vector3;
     }
     #endregion
-    //ローカル角度の設定
+    // Setting local angle
     #region SetLocalEulerAngles
     public static void SetLocalEulerAngles(this Transform transform, float x, float y, float z)
     {
@@ -213,7 +213,7 @@ public static class Extension
         transform.localEulerAngles = vector3;
     }
     #endregion
-    //ローカル角度を加算
+    // Add local angle
     #region AddLocalEulerAngles
     public static void AddLocalEulerAngles(this Transform transform, float x, float y, float z)
     {
@@ -236,7 +236,7 @@ public static class Extension
         transform.localEulerAngles = vector3;
     }
     #endregion
-    //タグの中で一番近いオブジェクトを探す
+    // Search for the near object int the tag
     #region SearchNearTag
     public static GameObject SearchNearTag(this Transform transform, string tag_name)
     {
@@ -259,47 +259,12 @@ public static class Extension
         }
         return target;
     }
-    public static GameObject SearchNearTag(this Transform transform, string tag_name ,int distance)
-    {
-        float dis = 0;
-        float near_dis = 0;
-
-        GameObject target = null;
-
-        foreach (GameObject obj in GameObject.FindGameObjectsWithTag(tag_name))
-        {
-            if(obj == null)
-            {
-                return null;
-            }
-            if (!obj.activeInHierarchy)
-            {
-                continue;
-            }
-            dis = Vector3.Distance(transform.position, obj.transform.position);
-
-            if (near_dis <= distance || near_dis > dis)
-            {
-                near_dis = dis;
-
-                target = obj;
-            }
-        }
-
-        return target;
-    }
     #endregion
-    //タグが付いているオブジェクトの数
+    // Number of object with tag
     #region SearchTagCount
     public static int SearchTagCount(string tag_name)
     {
-        int count = 0;
-        foreach (GameObject obj in GameObject.FindGameObjectsWithTag(tag_name))
-        {
-            count++;
-        }
-
-        return count;
+        return GameObject.FindGameObjectsWithTag(tag_name).Length;
     }
     #endregion
     

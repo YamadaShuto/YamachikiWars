@@ -5,5 +5,4 @@ using UnityEngine;
 // Original attribute name
 public class ReadOnlyAttribute : PropertyAttribute
 {
-
 }
