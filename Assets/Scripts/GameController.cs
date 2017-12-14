@@ -7,34 +7,16 @@ public class GameController : MonoBehaviourCustom
 {
     public GameObject enemy;
 
-    [SerializeField]
-    private UnityEngine.UI.Text score;
-    [SerializeField]
-    private UnityEngine.UI.Text hp;
-    [SerializeField]
-    private PlayerController player;
-
     // Use this for initialization
     void Start ()
     {
         // Create enemy
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 5; i++)
         {
-            // Setting position
-            int num = Random.Range(0, 1);
             Vector3 pos = Vector3.zero;
-            if (num == 1)
-            {
-                pos.x = Random.Range(40, 100);
-                pos.y = Random.Range(40, 100);
-                pos.z = Random.Range(40, 100);
-            }
-            else
-            {
-                pos.x = Random.Range(-40, -100);
-                pos.y = Random.Range(-40, -100);
-                pos.z = Random.Range(-40, -100);
-            }
+            pos.x = Extension.RandumRange(80, 150, -80, -150);
+            pos.y = Extension.RandumRange(80, 150, -80, -150);
+            pos.z = Extension.RandumRange(80, 150, -80, -150);
             Instantiate(enemy, pos, Quaternion.identity);
         }
     }
@@ -46,12 +28,10 @@ public class GameController : MonoBehaviourCustom
         {
             SceneManager.LoadScene(3);
         }
-        score.text = "残り敵数:" + Extension.SearchTagCount("Enemy").ToString();
-        hp.text = "PlayerHP:" + player.HP.ToString();
 	}
 
     static public void GameOver()
     {
         SceneManager.LoadScene(4);
-    }
+    }   
 }

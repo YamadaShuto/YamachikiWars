@@ -12,7 +12,10 @@ public class Bullet : MonoBehaviourCustom
     private bool is_player_has = false;
     // Target information
     private Transform m_target;
-    
+    [SerializeField]
+    // Collision effect
+    private GameObject particle;
+
     // Use this for initialization
     void Start ()
     {
@@ -57,13 +60,6 @@ public class Bullet : MonoBehaviourCustom
 
     void OnCollisionEnter(Collision collision)
     {
-        /*
-        if(collision.gameObject == null)
-        {
-            Destroy(this.gameObject);
-            return;
-        }
-        */
         // If the player has
         if (is_player_has)
         {
@@ -73,6 +69,7 @@ public class Bullet : MonoBehaviourCustom
                 // Cut back Enemy HP
                 collision.gameObject.GetComponent<EnemyController>().HP--;
                 Destroy(this.gameObject);
+                Instantiate(particle,transform.position,Quaternion.identity);
             }
         }
         else
@@ -83,6 +80,8 @@ public class Bullet : MonoBehaviourCustom
                 // Cut back Player HP
                 collision.gameObject.GetComponent<PlayerController>().HP--;
                 Destroy(this.gameObject);
+                Vector3 pos = transform.forward;
+                Instantiate(particle, transform.forward, Quaternion.identity);
             }
         }
     }

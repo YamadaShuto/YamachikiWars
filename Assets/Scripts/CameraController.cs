@@ -22,20 +22,16 @@ public class CameraController : MonoBehaviourCustom
 
     private void Move()
     {
-        // Whether  it`s accelerating or not
-        if(m_target.GetComponent<PlayerController>().IsBoost)
+        transform.position = Vector3.Lerp(transform.position, m_offset.position, Time.deltaTime * 1.0f);
+        if (m_target.GetComponent<PlayerController>().IsBoost)
         {
-            transform.position = Vector3.Lerp(transform.position, m_offset.position + new Vector3(0, 0, -1), Time.deltaTime * 5.0f);
-        }
-        else
-        {
-            transform.position = Vector3.Lerp(transform.position, m_offset.position, Time.deltaTime * 7.0f);
-        }
+            transform.localPosition += new Vector3(Random.Range(-0.02f, 0.02f), Random.Range(-0.02f, 0.02f),0.0f);
+        } 
     }
 
     private void Rotation()
-    {
+    { 
         // Look at the player
-        transform.rotation = Quaternion.Lerp(transform.rotation, m_target.transform.rotation, Time.deltaTime * 10.0f);
+        transform.rotation = Quaternion.Lerp(transform.rotation, m_offset.rotation, Time.deltaTime * 1.0f);
     }
 }

@@ -267,5 +267,21 @@ public static class Extension
         return GameObject.FindGameObjectsWithTag(tag_name).Length;
     }
     #endregion
-    
+    //
+    #region RandumRange2
+    public static int RandumRange(int min , int max , int min2 , int max2)
+    {
+        int num;
+        if(Random.Range(0,1) == 0)
+        {
+            num = Random.Range(min, max);
+        }
+        else
+        {
+            num = Random.Range(min2, max2);
+        }
+        return num;
+    }
+    #endregion
 }
+

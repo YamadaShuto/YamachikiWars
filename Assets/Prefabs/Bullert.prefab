@@ -37,13 +37,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1762555656821306}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: -0, w: -0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.6}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 270, z: 0}
 --- !u!23 &23114695730607380
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -57,7 +57,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 202ed986ec170bf4d929dfece1d35d74, type: 2}
+  - {fileID: 2100000, guid: fb8f132d3428b2644a8ae66ff9a14f6a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -109,7 +109,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3754604b23b07140afe545afbd2c783, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effect: {fileID: 100010, guid: 031d08f52af1daa4f929b85221519426, type: 2}
+  particle: {fileID: 1408838941377272, guid: 05f9a0e5cd9ee414095eac8f58e54799, type: 2}
 --- !u!135 &135887152681029048
 SphereCollider:
   m_ObjectHideFlags: 1

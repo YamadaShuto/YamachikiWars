@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyController : MonoBehaviourCustom
 {
     // Velocirt
-    private float m_speed = 3.0f;
+    private float m_speed = 4.0f;
     // Player object
     private GameObject m_player;
     // Bullet object
@@ -16,13 +16,18 @@ public class EnemyController : MonoBehaviourCustom
     private int m_hp = 10;
     // Bullet firing interval
     private int m_shot_time = 25;
-    // Healing interval
-    private float m_heal_time = 1600;
+    // Bullet interval count
+    private int m_shot_time_cnt = 0;
+    // Target transform
+    Transform trans;
+    private float m_rot_cnt;
+
     // Use this for initialization
     void Start ()
     {
         m_player = GameObject.FindGameObjectWithTag("Player");
-	}
+        trans = transform;
+    }
 	
 	// Update is called once per frame
 	void Update ()
@@ -32,12 +37,9 @@ public class EnemyController : MonoBehaviourCustom
             Destroy(this.gameObject);
             return;
         }
-        if(Time.time % m_heal_time == 0)
-        {
-            HP++;
-        }
-        Move();
         Rotation();
+        Move();
+        Shot();
     }
 
     private void Move()
@@ -48,21 +50,35 @@ public class EnemyController : MonoBehaviourCustom
 
     private void Rotation()
     {
+        if(m_rot_cnt >= 180)
+        {
+            trans.transform.LookAt(m_player.transform);
+            m_rot_cnt = 0;
+        }
+        else
+        {
+            m_rot_cnt++;
+        }
         // Look at the target
-        transform.rotation = Quaternion.Slerp(transform.rotation, m_player.transform.rotation, Time.deltaTime * m_speed);
+        transform.rotation = Quaternion.Slerp(transform.rotation, trans.rotation, Time.deltaTime * m_speed);
     }
 
     private void Shot()
     {
         //Judgment of player distance
-        if (Vector3.Distance(transform.position, m_player.transform.position) <= 30.0f)
+        if (Vector3.Distance(transform.position, m_player.transform.position) <= 40.0f)
         {
-            if (Time.time % m_shot_time == 0)
+            if (m_shot_time == m_shot_time_cnt)
             {
                 GameObject obj = Instantiate(m_bullet, transform.position, transform.rotation);
                 obj.GetComponent<Bullet>().IsLockOn = true;
                 obj.GetComponent<Bullet>().IsPlayer = false;
                 obj.GetComponent<Bullet>().Target = transform.SearchNearTag("Player");
+                m_shot_time_cnt = 0;
+            }
+            else
+            {
+                m_shot_time_cnt++;
             }
         }
     }

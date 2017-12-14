@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviourCustom
     private float rot_speed = 0.3f;
     [ReadOnly]
     // Velocity
-    private float m_speed = 3.0f;
+    private float m_speed = 5.0f;
     // Bullet object
     [SerializeField]
     private GameObject bullet;
@@ -20,48 +20,64 @@ public class PlayerController : MonoBehaviourCustom
     public int m_hp = 50;
     // Shot interval
     private int m_shot_time = 20;
+    // Shot Counter
+    private int m_shot_cnt = 0;
     // Whether it`s shooting bullets
     private bool is_shoot = false;
     // Whether it`s boosting
     private bool is_boost = false;
+    // Boost time
+    private int m_boost_time = 180;
+    [ReadOnly]
+    // Boost time interval
+    private int m_boost_time_cnt = 180;
 
     // Update is called once per frame
     void Update()
     {
         if(HP <= 0)
         {
-            GameController.GameOver();
+            return;
         }
         if(Input.GetKey(KeyCode.A))
         {
-            m_speed = 4.5f;
             is_boost = true;
         }
         else
         {
-            m_speed = 3.0f;
             is_boost = false;
+            if(m_boost_time_cnt < 240)
+            {
+                m_boost_time_cnt++;
+            }
         }
-        // Moving processing
-        Move();
         // Rotation processing
         Rotation();
-        // Lock on processing
-        LockOn();
         // Shooting bullets processing
         Shot();
-
-    }
-
-    private void boost()
-    {
-
+        // Moving processing
+        Move();
+        // Lock on processing
+        LockOn();
     }
 
     private void Move()
     {
+        if (m_boost_time_cnt <= 0)
+        {
+            is_boost = false;
+        }
         // Moving to the front
-        transform.Translate(Vector3.forward * Time.deltaTime * m_speed * 1);
+        if (is_boost)
+        {
+            transform.Translate(Vector3.forward * Time.deltaTime * (m_speed + 3.0f));
+            m_boost_time_cnt--;
+        }
+        else
+        {
+
+            transform.Translate(Vector3.forward * Time.deltaTime * m_speed);
+        }
     }
 
     private void Rotation()
@@ -106,9 +122,11 @@ public class PlayerController : MonoBehaviourCustom
     {
         if (is_shoot)
         {
-            if (Time.time % m_shot_time == 0)
+            m_shot_cnt++;
+            if ( m_shot_time == m_shot_cnt)
             {
                 is_shoot = false;
+                m_shot_cnt = 0;
             }
         }
         else
@@ -148,12 +166,17 @@ public class PlayerController : MonoBehaviourCustom
         get { return is_boost; }
     }
 
+    public int BoostCnt
+    {
+        get { return m_boost_time_cnt; }
+    }
+
     // Collision ditermination
     void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.tag == "Enemy")
         {
-            GameController.GameOver();
+            HP = 0;
         }
     }
 }

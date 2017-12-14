@@ -84,8 +84,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Plugin\SkySphere_V1\Examples\Gui.cs" />
-    <Compile Include="Assets\Plugin\SkySphere_V1\Examples\MouseLook.cs" />
+    <Compile Include="Assets\Plugin\SimpleParticlePack\Scripts\ParticleTester.cs" />
     <Compile Include="Assets\Plugin\Standard Assets\CrossPlatformInput\Scripts\AxisTouchButton.cs" />
     <Compile Include="Assets\Plugin\Standard Assets\CrossPlatformInput\Scripts\ButtonHandler.cs" />
     <Compile Include="Assets\Plugin\Standard Assets\CrossPlatformInput\Scripts\CrossPlatformInputManager.cs" />
@@ -143,21 +142,21 @@
     <Compile Include="Assets\Scripts\LogoController.cs" />
     <Compile Include="Assets\Scripts\LogoFront.cs" />
     <Compile Include="Assets\Scripts\MonoBehaviourCustom.cs" />
+    <Compile Include="Assets\Scripts\ParticleAutoDelete.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
     <Compile Include="Assets\Scripts\ReadOnlyAttribute.cs" />
     <Compile Include="Assets\Scripts\ResultScene.cs" />
     <Compile Include="Assets\Scripts\TitleCamera.cs" />
     <Compile Include="Assets\Scripts\TitleController.cs" />
+    <Compile Include="Assets\Scripts\UIController.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Plugin\Moon\Moon - Readme.txt" />
-    <None Include="Assets\Plugin\Moon\Shaders\planetshader.shader" />
-    <None Include="Assets\Plugin\SkySphere_V1\Documentation\How to use.txt" />
     <None Include="Assets\Plugin\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
     <None Include="Assets\Plugin\Standard Assets\ParticleSystems\ParticleSystemsGuidelines.txt" />
     <None Include="Assets\Plugin\Standard Assets\ParticleSystems\Shaders\PriorityParticleAdd.shader" />
     <None Include="Assets\Plugin\Standard Assets\ParticleSystems\Shaders\PriorityParticleAddSoft.shader" />
     <None Include="Assets\Plugin\Standard Assets\ParticleSystems\Shaders\PriorityParticleAlpha.shader" />
+    <None Include="Assets\Shader\CullFrontMirror.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

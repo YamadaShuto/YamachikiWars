@@ -105,5 +105,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a956dddd8be05049bd096e077701fce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullet: {fileID: 1028246652509522, guid: f1ad03aa81dc62741bbbe8c17f309158, type: 2}
+  m_bullet: {fileID: 1028246652509522, guid: f1ad03aa81dc62741bbbe8c17f309158, type: 2}
   m_hp: 10
